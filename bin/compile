@@ -33,6 +33,6 @@ mkdir -p "${build}/libpostal"
 mv /app/libpostal $build
 
 echo "exporting PATH and LIBRARY_PATH" | indent
-PROFILE_PATH="$BUILD_DIR/.profile.d/libpostal.sh"
+PROFILE_PATH="$build/.profile.d/libpostal.sh"
 mkdir -p $(dirname $PROFILE_PATH)
 echo 'export LD_LIBRARY_PATH="$LD_LIBRARY_PATH:app/libpostal/lib"' >> $PROFILE_PATH
