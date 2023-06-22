@@ -2,6 +2,11 @@
 
 set -e
 
+indent() {
+  sed -u 's/^/       /'
+}
+
+
 build=${1:-}
 cache=${2:-}
 
@@ -14,7 +19,9 @@ echo "-----> Downloading libpostal"
 git clone https://github.com/openvenues/libpostal
 cd libpostal/
 ./bootstrap.sh
-LDFLAGS="-L${build}/libpostal/lib" CFLAGS="-I${build}/libpostal/include" PKG_CONFIG_PATH="${build}/libpostal/lib/pkgconfig"
+export LDFLAGS="-L${build}/libpostal/lib" 
+export CFLAGS="-I${build}/libpostal/include" 
+export PKG_CONFIG_PATH="${build}/libpostal/lib/pkgconfig"
 ./configure  --enable-fast-install --prefix=/app/libpostal --datadir=/app/libpostal/data
 
 echo "-----> libpostal make"
@@ -23,4 +30,9 @@ make install
 
 echo "-----> libpostal mv to ${build}/libpostal"
 mkdir -p "${build}/libpostal"
-mv /app/libpostal/* "${build}/libpostal"
+mv /app/libpostal $build
+
+echo "exporting PATH and LIBRARY_PATH" | indent
+PROFILE_PATH="$BUILD_DIR/.profile.d/libpostal.sh"
+mkdir -p $(dirname $PROFILE_PATH)
+echo 'export LD_LIBRARY_PATH="$LD_LIBRARY_PATH:app/libpostal/lib"' >> $PROFILE_PATH
