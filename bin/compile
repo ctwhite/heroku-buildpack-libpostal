@@ -1,33 +1,23 @@
 #!/usr/bin/env bash
 
-
-
-
 set -e
 
+build=${1:-}
+cache=${2:-}
 
+mkdir -p "${build}"
+mkdir -p "${cache}"
 
-build=$1
-cache=$2
+cd "${cache}"
 
-mkdir -p $build
-mkdir -p $cache
-
-cd $cache
-
-cd -
 echo "-----> Downloading libpostal"
-
-git clone https://github.com/openvenues/libpostal --depth 1
+git clone https://github.com/openvenues/libpostal
 cd libpostal/
 ./bootstrap.sh
 LDFLAGS="-L$build/lib" CFLAGS="-I$buildinclude" PKG_CONFIG_PATH="$build/lib/pkgconfig" ./configure --prefix=/app/libpostal --datadir=$build
-cp ~/vendor/include/snappy* .
 
+echo "-----> libpostal make"
 make
-make install
 make install
 
 mv /app/libpostal $build
-
-#profile.d script -> downloads the data.
