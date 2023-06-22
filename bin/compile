@@ -14,10 +14,13 @@ echo "-----> Downloading libpostal"
 git clone https://github.com/openvenues/libpostal
 cd libpostal/
 ./bootstrap.sh
-LDFLAGS="-L$build/lib" CFLAGS="-I$buildinclude" PKG_CONFIG_PATH="$build/lib/pkgconfig" ./configure --prefix=/app/libpostal --datadir=$build
+LDFLAGS="-L${build}/libpostal/lib" CFLAGS="-I${build}/libpostal/include" PKG_CONFIG_PATH="${build}/libpostal/lib/pkgconfig"
+./configure  --enable-fast-install --prefix=/app/libpostal --datadir=/app/libpostal/data
 
 echo "-----> libpostal make"
 make
 make install
 
-mv /app/libpostal $build
+echo "-----> libpostal mv to ${build}/libpostal"
+mkdir -p "${build}/libpostal"
+mv /app/libpostal/* "${BUILD_DIR}/libpostal"
