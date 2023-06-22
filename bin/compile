@@ -23,4 +23,4 @@ make install
 
 echo "-----> libpostal mv to ${build}/libpostal"
 mkdir -p "${build}/libpostal"
-mv /app/libpostal/* "${BUILD_DIR}/libpostal"
+mv /app/libpostal/* "${build}/libpostal"
